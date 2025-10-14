@@ -1,0 +1,43 @@
+[project]
+name = "retail-app"
+version = "0.1.0"
+description = "Retail Shop Bot with FastAPI and LangChain"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "alembic>=1.16.5",
+    "fastapi>=0.116.2",
+    "psycopg2-binary>=2.9.10",
+    "pydantic>=2.11.9",
+    "sqlalchemy>=2.0.43",
+    "uvicorn>=0.35.0",
+    "python-multipart>=0.0.7",
+    "python-dotenv>=1.0.0",
+    "langchain>=0.1.0",
+    "langchain-google-genai>=0.0.10",
+    "langchain-community>=0.0.20",
+    "langchain-huggingface>=0.0.10",
+    "chromadb>=0.4.24",
+    "jinja2>=3.1.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black>=24.3.0",
+    "isort>=5.13.2",
+    "ruff>=0.4.6",
+    "pre-commit>=3.6.0",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py313']
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+fix = true

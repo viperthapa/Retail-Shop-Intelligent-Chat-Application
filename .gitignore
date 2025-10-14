@@ -1,0 +1,29 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Environment variables
+.env
+
+# Virtual environments
+.venv
+myretail-env/
+myenv/
+
+# System / IDE files
+.DS_Store
+.idea/
+.vscode/
+
+# Other temp files
+.ruff_cache/
+.__pycache__/
+.pyc/
+
+# Other temp files
+*.log
+

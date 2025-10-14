@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetailShop Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+
+   
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>💬 RetailShop Chat</h1>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message assistant">
+                <div class="message-content">
+                    Hello! I'm your AI assistant. Ask me anything!
+                </div>
+            </div>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="loading-dots">
+                Thinking<span>.</span><span>.</span><span>.</span>
+            </div>
+        </div>
+        
+        <div class="chat-input-container">
+            <form class="chat-form" id="chatForm">
+                <input 
+                    type="text" 
+                    name="question" 
+                    class="chat-input" 
+                    id="questionInput"
+                    placeholder="Type your question here..." 
+                    required
+                    autocomplete="off"
+                >
+                <button type="submit" class="chat-button" id="submitBtn">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const chatForm = document.getElementById('chatForm');
+        const chatMessages = document.getElementById('chatMessages');
+        const questionInput = document.getElementById('questionInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const loading = document.getElementById('loading');
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const question = questionInput.value.trim();
+            if (!question) return;
+
+            // Add user message to chat
+            addMessage(question, 'user');
+            
+            // Clear input
+            questionInput.value = '';
+            
+            // Disable form during request
+            submitBtn.disabled = true;
+            questionInput.disabled = true;
+            loading.classList.add('active');
+
+            try {
+                // Send request to backend
+                const formData = new FormData();
+                formData.append('question', question);
+                
+                const response = await fetch('/ask', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                const answer = data.answer;
+                
+                // Add assistant message to chat
+                addMessage(answer, 'assistant');
+                
+            } catch (error) {
+                addMessage('Sorry, there was an error processing your request.', 'assistant');
+                console.error('Error:', error);
+            } finally {
+                // Re-enable form
+                submitBtn.disabled = false;
+                questionInput.disabled = false;
+                loading.classList.remove('active');
+                questionInput.focus();
+            }
+        });
+
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.textContent = text;
+            
+            messageDiv.appendChild(contentDiv);
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    </script>
+</body>
+</html>
