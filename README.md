@@ -21,6 +21,7 @@ An intelligent chatbot that provides information about retail shop products, dis
 ## Prerequisites
 
 - Python 3.13+
+- FastAPI
 - PostgreSQL database
 - Google API Key for Generative AI
 
